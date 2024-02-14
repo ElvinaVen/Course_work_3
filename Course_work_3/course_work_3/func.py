@@ -182,3 +182,39 @@ def get_currency(transaction):
     """
     currency = transaction["operationAmount"]["currency"]["name"]
     return currency
+
+
+def get_transaction_info(transaction):
+    """
+    Функция получения инф-ии о транзакции
+    :param transaction: единичная транзакция
+    :return: date_formatted - форматированная дата, description - описание транзакции
+    """
+    date_formatted = get_formatted_date(transaction)  # вызов ф-ии получения форматированной даты из транзакции
+    description = get_description(transaction)  # вызов ф-ии получения описания из транзакции
+    return date_formatted, description
+
+
+def get_sender_info(transaction):
+    """
+    Функция получения инф-ии об отправителе
+    :param transaction: единичная транзакция
+    :return: sender_account_name - тип платежной системы, sender_account_number - номер счета разделенный на 4 части
+    """
+    sender_account = get_sender_account(transaction)  # получение счета отправителя
+    sender_account_name = get_name_account(sender_account)  # получение типа платежной системы
+    masked_sender_account = get_mask_sender_account_number(get_number_account(sender_account))  # маскировка номера счета отправителя
+    sender_account_number = split_sender_account_number(masked_sender_account)  # разделение номера счета на 4 части
+    return sender_account_name, sender_account_number
+
+
+def get_receiver_info(transaction):
+    """
+    Функция получения инф-ии о получателе
+    :param transaction: единичная транзакция
+    :return: receiver_account_name - тип платежной системы, masked_receiver_account - маскированный номер
+    """
+    receiver_account = get_receiver_account(transaction)  # получение счета получателя
+    receiver_account_name = get_name_account(receiver_account)  # получение типа платежной системы
+    masked_receiver_account = get_mask_receiver_account_number(get_number_account(receiver_account))  # маскировка номера счета получателя
+    return receiver_account_name, masked_receiver_account

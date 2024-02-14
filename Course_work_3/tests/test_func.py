@@ -51,3 +51,21 @@ def test_get_formatted_date():
 
 def test_get_sender_account():
     assert get_sender_account(src) == 'Счет 24763316288121894080'
+
+
+def test_get_transaction_info():
+    date_formatted, description = get_transaction_info(src)
+    assert date_formatted == '11.09.2019'
+    assert description == 'Перевод организации'
+
+
+def test_get_sender_info():
+    sender_account_name, sender_account_number = get_sender_info(src)
+    assert sender_account_name == 'Счет'
+    assert sender_account_number == '2476 33** **** **** 4080'
+
+
+def test_get_receiver_info():
+    receiver_account_name, masked_receiver_account = get_receiver_info(src)
+    assert receiver_account_name == 'Счет'
+    assert masked_receiver_account == '**6930'
